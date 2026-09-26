@@ -54,7 +54,7 @@ This writes the document folder `path/to/paper.l2m/` (see [DOCUMENT.md](DOCUMENT
 python3 epsilon_render.py path/to/paper.l2m -o paper.html
 ```
 
-packs it with the viewer into one file that works offline. `--html paper.html` on the first command does both at once. Options of `epsilon_convert.py`:
+packs it with the viewer into one file that works offline. The fonts go inside too (the default reading font, the bar's font and the font list's names, about 0.4 MB, downloaded once from Google Fonts and kept in `~/.cache/epsilon/fonts`); only a font the reader switches to is fetched when chosen. `--html paper.html` on the first command does both at once. Options of `epsilon_convert.py`:
 
 | option | effect |
 | --- | --- |

@@ -17,9 +17,10 @@
   }
   var FONTS = {}, DEF = {};
 
+  var INLINE = window.L2M_FONTS_INLINE || null;       // (a one-file page carrying its fonts)
   function load(key) {
     var f = FONTS[key];
-    if (!f || !f.css) return;
+    if (!f || !f.css || (INLINE && INLINE.keys.indexOf(key) >= 0)) return;
     var id = "l2m-font-" + key;
     if (document.getElementById(id)) return;
     var l = document.createElement("link");
@@ -32,7 +33,7 @@
   // of its name (Google Fonts' text= subsets), under a name of its own (never mixed with the real font), fetched once the
   // app is running and idle. Only the font one reads in comes whole. If they cannot come, the list fetches the whole
   // fonts when it opens, as before.
-  var previews = 0;                    // 0 not asked, 1 coming, 2 in, -1 not to be had
+  var previews = INLINE && INLINE.previews ? 2 : 0;       // 0 not asked, 1 coming, 2 in, -1 not to be had
   window.L2M_previewFonts = function () {
     if (previews) return;
     var keys = Object.keys(FONTS).filter(function (k) { return FONTS[k].css; });
@@ -135,7 +136,7 @@
     (theme.fonts || []).forEach(function (f) { FONTS[f.key] = f; });
     DEF = theme.defaults || {};
     if (DEF.font) load(DEF.font);
-    if (theme.uiFont && !document.getElementById("l2m-font-ui")) {      // the font of the bar, panels and app lists
+    if (theme.uiFont && !(INLINE && INLINE.ui) && !document.getElementById("l2m-font-ui")) {      // the font of the bar, panels and app lists
       var l = document.createElement("link");
       l.id = "l2m-font-ui";
       l.rel = "stylesheet";
